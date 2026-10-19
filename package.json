@@ -11,9 +11,11 @@
     "build": "tsc && vite build",
     "build:electron": "tsc -p tsconfig.electron.json",
     "build:backend": "pyinstaller backend.spec --distpath dist-backend --workpath build-backend --noconfirm",
+    "generate:icons": "python scripts/generate_icon.py",
+    "predist": "npm run generate:icons",
     "electron:dev": "npm run dev",
     "electron:preview": "npm run build && npm run build:electron && electron .",
-    "dist:win": "npm run build:backend && npm run build && npm run build:electron && electron-builder --win --x64",
+    "dist:win": "npm run generate:icons && npm run build:backend && npm run build && npm run build:electron && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64",
     "dist": "npm run dist:win",
     "backend": "python backend/main.py"
   },
