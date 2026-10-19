@@ -1,0 +1,53 @@
+
+# JavaScript dependencies
+node_modules/
+
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Generated build output
+dist/
+dist-backend/
+build/
+release/
+
+# Model weights
+*.pt
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local inspection history and uploaded images
+backend/data/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+
+# Additional generated build folders
+build-backend/
+dist-electron/
+
+# Temporary development files
+scratch/
+
+# Local test image
+test_pcb.jpg

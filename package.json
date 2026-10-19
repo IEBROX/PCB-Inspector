@@ -1,0 +1,102 @@
+{
+  "name": "pcb-inspector",
+  "version": "1.0.0",
+  "description": "Industrial PCB Defect Detection Desktop Application using YOLO and Electron",
+  "main": "dist-electron/main.js",
+  "author": "PCB Inspector Team",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on tcp:5173 && npm run build:electron && electron . --dev\"",
+    "dev:vite": "vite",
+    "build": "tsc && vite build",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build:backend": "pyinstaller backend.spec --distpath dist-backend --workpath build-backend --noconfirm",
+    "electron:dev": "npm run dev",
+    "electron:preview": "npm run build && npm run build:electron && electron .",
+    "dist:win": "npm run build:backend && npm run build && npm run build:electron && electron-builder --win --x64",
+    "dist": "npm run dist:win",
+    "backend": "python backend/main.py"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.pcbinspector.app",
+    "productName": "PCB Inspector",
+    "directories": {
+      "output": "release"
+    },
+    "extraResources": [
+      {
+        "from": "dist-backend/pcb-backend",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "backend/models",
+        "to": "models",
+        "filter": [
+          "pcb_best.pt"
+        ]
+      },
+      {
+        "from": "samples",
+        "to": "samples",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "build/icon.ico",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "PCB-Inspector-Setup.exe",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PCB Inspector",
+      "uninstallDisplayName": "PCB Inspector",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
